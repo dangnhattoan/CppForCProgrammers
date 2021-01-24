@@ -9,38 +9,38 @@
 
 using namespace std;
 /*Operator overloading of GraphEdge*/
-template <class T, class W>
-ostream& operator<<(ostream& os, const GraphEdge<T, W>& edge)
+
+ostream& operator<<(ostream& os, const GraphEdge& edge)
 {
 	os << edge.get_start() << "--" << edge.get_end() << ": " << edge.get_weight();
 	return os;
 }
 
-template <class T, class W>
-bool operator==(const GraphEdge<T, W>&lhs, const GraphEdge<T, W>&rhs)
+
+bool operator==(const GraphEdge&lhs, const GraphEdge&rhs)
 {
-	set<T> node{lhs.get_start(), lhs.get_end()};
+	set<int> node{lhs.get_start(), lhs.get_end()};
 	node.insert(rhs.get_start());
 	node.insert(rhs.get_end());
 	return node.size() == 2 ? true : false;
 }
 
-template <class T, class W>
-bool Graph<T, W>::adjacent(T x, T y) const
+
+bool Graph::adjacent(int x, int y) const
 {
-	for (GraphEdge<T, W> edge : this->edgeLists)
+	for (GraphEdge edge : this->edgeLists)
 	{
-		if (edge == GraphEdge<T, W>{x, y})
+		if (edge == GraphEdge{x, y})
 			return true;
 	}
 	return false;
 }
 
-template <class T, class W>
-set<T> Graph<T, W>::neighbors(T x) const
+
+set<int> Graph::neighbors(int x) const
 {
-	set<T> neighbors;
-	for (GraphEdge<T, W> edge : this->edgeLists)
+	set<int> neighbors;
+	for (GraphEdge edge : this->edgeLists)
 	{
 		if (edge.get_end() == x) neighbors.insert(edge.get_start());
 		if (edge.get_start() == x) neighbors.insert(edge.get_end());
@@ -48,23 +48,23 @@ set<T> Graph<T, W>::neighbors(T x) const
 	return neighbors;
 }
 
-template <class T, class W>
-void Graph<T, W>::add(T x, T y)
+
+void Graph::add(int x, int y)
 {
-	this->edgeLists.push_back(GraphEdge<T, W>{x, y});
+	this->edgeLists.push_back(GraphEdge{x, y});
 }
 
-template <class T, class W>
-void Graph<T, W>::add(int x, int y, int weight)
+
+void Graph::add(int x, int y, int weight)
 {
-	GraphEdge<T, W> edge{x, y, weight};
+	GraphEdge edge{x, y, weight};
 	this->edgeLists.push_back(edge);
 }
 
-template <class T, class W>
-void Graph<T, W>::deleteEdge(T x, T y)
+
+void Graph::deleteEdge(int x, int y)
 {
-	GraphEdge<T, W> remove_edge{x,y};
+	GraphEdge remove_edge{x,y};
 	for (size_t i = 0; i < this->edgeLists.size(); i++)
 	{
 		if (this->edgeLists.at(i) == remove_edge)
@@ -72,16 +72,16 @@ void Graph<T, W>::deleteEdge(T x, T y)
 	}
 }
 
-template <class T, class W>
-void Graph<T, W>::printGraph() const
+
+void Graph::printGraph() const
 {
-	for(GraphEdge<T, W>edge : this->edgeLists)
+	for(GraphEdge edge : this->edgeLists)
 		cout << edge << endl;
 }
 
-template <class T, class W>
-T Graph<T, W>::get_edge_value(T x, T y) const {
-	GraphEdge<T, W> edge {x, y};
+
+int Graph::get_edge_value(int x, int y) const {
+	GraphEdge edge {x, y};
 	for (size_t i = 0; i < this->edgeLists.size(); i++)
 	{
 		if(this->edgeLists[i] == edge)
@@ -90,11 +90,11 @@ T Graph<T, W>::get_edge_value(T x, T y) const {
 	return -1;
 }
 
-template <class T, class W>
-void Graph<T, W>::set_edge_value(T x, T  y, W weight)
+
+void Graph::set_edge_value(int x, int  y, int weight)
 {
-	GraphEdge<T, W> set_edge{x, y};
-	for (GraphEdge<T, W>&edge : this->edgeLists)
+	GraphEdge set_edge{x, y};
+	for (GraphEdge&edge : this->edgeLists)
 	{
 		if (edge == set_edge)
 		{
